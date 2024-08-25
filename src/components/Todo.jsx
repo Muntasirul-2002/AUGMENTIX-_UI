@@ -4,10 +4,11 @@ const Todo = () => {
   const [todos, setTodos] = useState([]);
   const [text, setText] = useState("");
   const [editId, setEditId] = useState(null);
+  const url = "https://augmentix-backend.onrender.com"
 
   useEffect(() => {
     const fetchTodos = async () => {
-      const response = await fetch("/api/todos");
+      const response = await fetch(`${url}/api/todos`);
       const data = await response.json();
       setTodos(data);
     };
@@ -19,7 +20,7 @@ const Todo = () => {
     if (!text) return;
 
     if (editId) {
-      const response = await fetch(`/api/todos/${editId}`, {
+      const response = await fetch(`${url}/api/todos/${editId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -30,7 +31,7 @@ const Todo = () => {
       setTodos(todos.map((todo) => (todo._id === editId ? updatedTodo : todo)));
       setEditId(null);
     } else {
-      const response = await fetch("/api/todos", {
+      const response = await fetch(`${url}/api/todos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,14 +46,14 @@ const Todo = () => {
   };
 
   const deleteTodo = async (id) => {
-    await fetch(`/api/todos/${id}`, {
+    await fetch(`${url}/api/todos/${id}`, {
       method: "DELETE",
     });
     setTodos(todos.filter((todo) => todo._id !== id));
   };
 
   const toggleComplete = async (id, completed) => {
-    const response = await fetch(`/api/todos/${id}`, {
+    const response = await fetch(`${url}/api/todos/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
